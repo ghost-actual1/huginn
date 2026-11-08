@@ -1,3 +1,5 @@
+![HUGINN — same story, every telling](docs/banner.png)
+
 # HUGINN
 
 A multi-source news reader that shows you the *same story* as told by different
@@ -54,7 +56,7 @@ src/cluster.js    story clustering
 src/topics.js     article -> desk classification
 src/analysis.js   optional analysis backend
 src/export.js     optional JSON webhook for pipeline consumers
-scripts/          cluster evaluation harness + fixture fetcher
+scripts/          cluster calibration harness, fixture fetcher, banner composer
 fixtures/         a saved slice of live headlines, used by the harness
 ```
 
