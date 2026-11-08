@@ -20,6 +20,11 @@ fly over the world and report back what it saw.
 
 ## Screens
 
+<p align="center">
+  <img src="docs/screenshots/stories.png" width="45%" alt="Stories view: story clusters with perspective tags, match confidence and article/outlet counts">
+  <img src="docs/screenshots/desks.png" width="45%" alt="Desks view: an expanded desk showing the cross-outlet stories filed under it">
+</p>
+
 | Tab | What it does |
 | --- | --- |
 | **Feed** | Timeline of every enabled outlet, or **Stories** — clusters covering the same event. Filter by desk and by editorial lean. |
@@ -98,6 +103,25 @@ export const C = { void: '#0b0b0c', raven: '#f59e0b', /* ... */ };
 
 Outlet brand colours are the deliberate exception: they identify a publisher, so
 they live next to the outlet in `src/sources.js`.
+
+## Feed quirks worth knowing
+
+Real feeds lie, and the app defends against it rather than trusting them:
+
+- **Outlet names in titles.** Google News and several CMSes append
+  ` - Outlet Name`; it's stripped before clustering or it becomes the highest-IDF
+  term in the batch.
+- **Missing dates.** Some feeds (Press TV) stamp no per-item date at all, only a
+  channel `<lastBuildDate>`; that is used as the fallback. Nine date spellings
+  are supported (`pubDate`, `published`, `updated`, `dc:date`, `date`,
+  `dc:created`, `issued`, `dc:issued`, `created`).
+- **Future timestamps.** Some outlets publish 90 minutes into the future, and
+  some stamp every item with feed-build time. A negative age used to render as
+  "just now" and float those outlets to the top of the timeline, so nothing may
+  claim to be newer than the moment it was fetched.
+- **Dead routes.** Outlets kill their RSS (AP returns 403, Reuters 401). Where
+  that happens the registry points at a Google News `site:` query instead — see
+  `src/sources.js`.
 
 ## Adding a source
 

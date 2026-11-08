@@ -1200,9 +1200,14 @@ export default function App() {
       const map = Object.fromEntries(pairs);
       if (map.huginn_settings) {
         try {
-          const saved = JSON.parse(map.huginn_settings);
+          const saved = JSON.parse(map.huginn_settings) || {};
           if (saved.backend === 'mork') saved.backend = 'generate';
-          setSettings({ ...DEFAULT_SETTINGS, ...saved });
+          // A key the user blanked must not clobber the build-time default:
+          // empty means "not set", not "explicitly none".
+          const set = Object.fromEntries(
+            Object.entries(saved).filter(([, value]) => value !== '' && value !== null && value !== undefined),
+          );
+          setSettings({ ...DEFAULT_SETTINGS, ...set });
           return;
         } catch { /* fall through to legacy */ }
       }
@@ -1331,7 +1336,15 @@ export default function App() {
         const source = activeSources[cursor++];
         try {
           const items = await fetchOne(source);
-          for (const item of items) item.topic = classifyTopic(item, source).topic;
+          // Feeds lie about time: some publish 90 minutes into the future, some
+          // stamp every item with the feed's build time. A negative age made
+          // timeAgo print "just now" and floated those outlets to the top of the
+          // timeline, so nothing may claim to be newer than the moment it arrived.
+          const now = Date.now();
+          for (const item of items) {
+            item.topic = classifyTopic(item, source).topic;
+            if (item.pubDate.getTime() > now) item.pubDate = new Date(now);
+          }
           counts[source.id] = items.length;
           allArticles.push(...items);
         } catch (err) {

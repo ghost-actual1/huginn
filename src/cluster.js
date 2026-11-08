@@ -208,10 +208,13 @@ function buildDoc(article, source) {
   const phrases = new Map();
   const rawWords = title.split(/\s+/);
   for (let i = 0; i < rawWords.length - 1; i++) {
-    const a = rawWords[i].replace(/[^A-Za-z'\u2019-]/g, '');
-    const b = rawWords[i + 1].replace(/[^A-Za-z'\u2019-]/g, '');
+    // Test the ORIGINAL tokens, punctuation included: "Musk, Miller" is two
+    // people, "Musk Miller" would only be one if the comma weren't there.
+    const a = rawWords[i].replace(/^[("'\u201c\u2018]+|[)"'\u201d\u2019,!?.:;]+$/g, '');
+    const b = rawWords[i + 1].replace(/^[("'\u201c\u2018]+|[)"'\u201d\u2019,!?.:;]+$/g, '');
     // Latin-1 letters too: "Sao Paulo" arrives as "São Paulo".
     if (!/^[A-Z][a-zA-Z\u00C0-\u024F'\u2019-]+$/.test(a) || !/^[A-Z][a-zA-Z\u00C0-\u024F'\u2019-]+$/.test(b)) continue;
+    if (rawWords[i] !== a || rawWords[i + 1] !== b) continue;
     if (NOT_ENTITIES.has(a.toLowerCase()) || NOT_ENTITIES.has(b.toLowerCase())) continue;
     if (PHRASE_BLOCK.has(a.toLowerCase()) || PHRASE_BLOCK.has(b.toLowerCase())) continue;
     const key = `${stem(a.toLowerCase())}|${stem(b.toLowerCase())}`;

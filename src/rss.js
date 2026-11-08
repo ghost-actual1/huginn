@@ -8,14 +8,24 @@
 
 export const MAX_ARTICLES_PER_SOURCE = 20;
 
+const DATE_TAGS = ['pubDate', 'published', 'updated', 'dc:date', 'date', 'dc:created', 'issued', 'dc:issued', 'created'];
+
 export function parseRSS(xmlText, sourceId, limit = MAX_ARTICLES_PER_SOURCE) {
   const items = [];
+  // Some feeds (Press TV) stamp no per-item date at all, only a channel
+  // <lastBuildDate>. Using it beats pretending every item was published "now",
+  // which floats a whole outlet to the top of the timeline.
+  const channelDate = extractTag(xmlText, 'lastBuildDate') || extractTag(xmlText, 'dc:date');
   const push = (item, index) => {
     const title = extractTag(item, 'title');
     if (!title) return false;
     const link = extractTag(item, 'link') || extractAttr(item, 'link', 'href');
     const desc = extractTag(item, 'description') || extractTag(item, 'summary') || extractTag(item, 'content');
-    const date = extractTag(item, 'pubDate') || extractTag(item, 'published') || extractTag(item, 'updated');
+    // Nine date spellings in the wild: RSS 2.0 pubDate, Atom published/updated,
+    // RSS 1.0/RDF dc:date, and the odd CMS that uses plain <date> or <issued>.
+    const date = DATE_TAGS
+      .map(tag => extractTag(item, tag))
+      .find(value => value) || channelDate;
     const category = extractTag(item, 'category') || extractAttr(item, 'category', 'term');
     items.push({
       id: `${sourceId}-${index}-${Date.now()}`,
