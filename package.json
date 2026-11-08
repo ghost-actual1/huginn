@@ -1,0 +1,45 @@
+{
+  "name": "huginn",
+  "version": "3.0.0",
+  "description": "Multi-source RSS reader that groups the same story across outlets, with editorial-perspective tagging. No backend required.",
+  "license": "MIT",
+  "author": "Chris Fahey",
+  "main": "expo/AppEntry.js",
+  "private": true,
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "build:android": "eas build -p android --profile preview",
+    "lint": "eslint App.js src/*.js",
+    "test:cluster": "node --experimental-default-type=module scripts/cluster-eval.mjs",
+    "fixtures": "python3 scripts/fetch-fixture.py"
+  },
+  "keywords": [
+    "rss",
+    "news",
+    "react-native",
+    "expo",
+    "media-analysis",
+    "clustering"
+  ],
+  "dependencies": {
+    "@expo/config-plugins": "^54.0.4",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "babel-preset-expo": "^54.0.8",
+    "expo": "^54.0.0",
+    "expo-build-properties": "^1.0.10",
+    "expo-clipboard": "~8.0.8",
+    "expo-status-bar": "~3.0.9",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-safe-area-context": "^5.6.2",
+    "react-native-svg": "^15.15.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/eslint-parser": "^7.29.13",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.5"
+  }
+}

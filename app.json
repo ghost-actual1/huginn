@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "HUGINN",
+    "slug": "huginn-app",
+    "version": "3.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "plugins": [
+      "./plugins/withCleartext.js"
+    ],
+    "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#060a0d"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.ghost.huginn",
+      "buildNumber": "3.0.0"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#060a0d"
+      },
+      "package": "com.ghost.huginn",
+      "versionCode": 30
+    },
+    "web": {
+      "favicon": "./assets/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7bb5b91f-490f-41b7-9cf4-a8b47efb4a1c"
+      }
+    },
+    "owner": "thedude10246"
+  }
+}
