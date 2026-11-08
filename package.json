@@ -3,7 +3,7 @@
   "version": "3.0.0",
   "description": "Multi-source RSS reader that groups the same story across outlets, with editorial-perspective tagging. No backend required.",
   "license": "MIT",
-  "author": "Chris Fahey",
+  "author": "HUGINN contributors",
   "main": "expo/AppEntry.js",
   "private": true,
   "scripts": {
